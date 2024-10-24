@@ -7,12 +7,10 @@ interface Message {
 }
 export default function Home() {
 
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessage] = useState<Message[]>([
     { sender: "Jack", content: "Hello World" },
     { sender: "Alice", content: "Hello There" },
   ]);
-
-  const [input, setInput] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

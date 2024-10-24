@@ -12,8 +12,6 @@ export default function Home() {
     { sender: "Alice", content: "Hello There" },
   ]);
 
-  const [input, setInput] = useState("");
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessages([...messages, { sender: "Jack", content: input }]);

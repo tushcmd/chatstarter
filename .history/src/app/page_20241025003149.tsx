@@ -7,12 +7,10 @@ interface Message {
 }
 export default function Home() {
 
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessage] = useState<Message[]>([
     { sender: "Jack", content: "Hello World" },
     { sender: "Alice", content: "Hello There" },
   ]);
-
-  const [input, setInput] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,18 +25,16 @@ export default function Home() {
         </div>
       ))}
 
-      <form
-        onSubmit={handleSubmit}>
+      <form>
         <input
           type="text"
           name="message"
           id='message'
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
         />
         <button
           type='submit'
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleSubmit}
         >
           Send
         </button>
