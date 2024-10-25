@@ -3,7 +3,7 @@ import "./globals.css";
 import ConvexClientProvider from "./convex-client-provider";
 
 import { Inter } from "next/font/google"
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,11 +19,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider dynamic>
+    <ClerkProvider>
       <html lang="en">
         <body
           className={`antialiased ${inter.className}`}
         >
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           <ConvexClientProvider>
 
             {children}

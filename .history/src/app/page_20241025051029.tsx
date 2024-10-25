@@ -2,7 +2,6 @@
 import { Authenticated, Unauthenticated, useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
 import { api } from '../../convex/_generated/api';
-import { SignInButton } from '@clerk/nextjs';
 
 
 
@@ -46,7 +45,7 @@ export default function Home() {
         </div>
       </Authenticated>
       <Unauthenticated>
-        <SignInButton />
+        <p>Please login</p>
       </Unauthenticated>
     </>
   );
