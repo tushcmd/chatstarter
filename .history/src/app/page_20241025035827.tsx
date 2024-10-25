@@ -3,8 +3,10 @@ import { useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
 import { api } from '../../convex/_generated/api';
 
-
-
+interface Message {
+  sender: string;
+  content: string;
+}
 export default function Home() {
 
   const messages = useQuery(api.functions.message.list);
@@ -19,7 +21,7 @@ export default function Home() {
   }
   return (
     <div>
-      {messages?.map((message, index) => (
+      {messages.map((message, index) => (
         <div key={index}>
           <strong>{message.sender}</strong>: {message.content}
         </div>
