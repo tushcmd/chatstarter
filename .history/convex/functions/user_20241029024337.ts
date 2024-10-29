@@ -1,19 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  internalMutation,
-  MutationCtx,
-  query,
-  QueryCtx,
-} from '../_generated/server';
+import { internalMutation, MutationCtx, QueryCtx } from '../_generated/server';
 import { v } from 'convex/values';
-
-export const get = query({
-  handler: async (ctx) => {
-    // const user = await getCurrentUser(ctx);
-    // return user;
-    return await getCurrentUser(ctx);
-  },
-});
 
 export const upsert = internalMutation({
   args: {
