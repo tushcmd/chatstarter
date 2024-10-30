@@ -1,7 +1,6 @@
 import { v } from 'convex/values';
-import { authenticatedMutation, authenticatedQuery } from './helpers';
+import { authenticatedQuery } from './helpers';
 import { QueryCtx } from '../_generated/server';
-import { Doc, Id } from '../_generated/dataModel';
 
 export const list = authenticatedQuery({
   handler: async (ctx) => {
@@ -34,51 +33,6 @@ export const get = authenticatedQuery({
     }
 
     return await getDirectMessage(ctx, id);
-  },
-});
-
-export const create = authenticatedMutation({
-  args: {
-    username: v.string(),
-  },
-  handler: async (ctx, { username }) => {
-    const user = await ctx.db
-      .query('users')
-      .withIndex('by_username', (q) => q.eq('username', username))
-      .first();
-    if (!user) {
-      throw new Error('User does not exist');
-    }
-    const directMessageForCurrentUser = await ctx.db
-      .query('directMessageMembers')
-      .withIndex('by_user', (q) => q.eq('user', ctx.user._id))
-      .collect();
-    const directMessageForOtherUser = await ctx.db
-      .query('directMessageMembers')
-      .withIndex('by_user', (q) => q.eq('user', user._id))
-      .collect();
-
-    const directMessage = directMessageForCurrentUser.find((dm) =>
-      directMessageForOtherUser.find(
-        (dm2) => dm.directMessage === dm2.directMessage
-      )
-    );
-    if (directMessage) {
-      return directMessage.directMessage;
-    }
-
-    const newDirectMessage = await ctx.db.insert('directMessages', {});
-    await Promise.all([
-      ctx.db.insert('directMessageMembers', {
-        user: ctx.user._id,
-        directMessage: newDirectMessage,
-      }),
-      ctx.db.insert('directMessageMembers', {
-        user: user._id,
-        directMessage: newDirectMessage,
-      }),
-    ]);
-    return newDirectMessage;
   },
 });
 

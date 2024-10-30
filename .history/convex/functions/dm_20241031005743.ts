@@ -52,36 +52,10 @@ export const create = authenticatedMutation({
     const directMessageForCurrentUser = await ctx.db
       .query('directMessageMembers')
       .withIndex('by_user', (q) => q.eq('user', ctx.user._id))
-      .collect();
-    const directMessageForOtherUser = await ctx.db
-      .query('directMessageMembers')
-      .withIndex('by_user', (q) => q.eq('user', user._id))
-      .collect();
-
-    const directMessage = directMessageForCurrentUser.find((dm) =>
-      directMessageForOtherUser.find(
-        (dm2) => dm.directMessage === dm2.directMessage
-      )
-    );
-    if (directMessage) {
-      return directMessage.directMessage;
-    }
-
-    const newDirectMessage = await ctx.db.insert('directMessages', {});
-    await Promise.all([
-      ctx.db.insert('directMessageMembers', {
-        user: ctx.user._id,
-        directMessage: newDirectMessage,
-      }),
-      ctx.db.insert('directMessageMembers', {
-        user: user._id,
-        directMessage: newDirectMessage,
-      }),
-    ]);
-    return newDirectMessage;
+      .first();
+    if (directMessageForCurrentUser) {
   },
 });
-
 const getDirectMessage = async (
   ctx: QueryCtx & { user: Doc<'users'> },
   id: Id<'directMessages'>

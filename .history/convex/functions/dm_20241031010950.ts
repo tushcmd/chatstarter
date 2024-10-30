@@ -68,20 +68,9 @@ export const create = authenticatedMutation({
     }
 
     const newDirectMessage = await ctx.db.insert('directMessages', {});
-    await Promise.all([
-      ctx.db.insert('directMessageMembers', {
-        user: ctx.user._id,
-        directMessage: newDirectMessage,
-      }),
-      ctx.db.insert('directMessageMembers', {
-        user: user._id,
-        directMessage: newDirectMessage,
-      }),
-    ]);
     return newDirectMessage;
   },
 });
-
 const getDirectMessage = async (
   ctx: QueryCtx & { user: Doc<'users'> },
   id: Id<'directMessages'>
