@@ -1,4 +1,5 @@
 import { v } from 'convex/values';
+import { mutation } from '../_generated/server';
 import { authenticatedMutation, authenticatedQuery } from './helpers';
 
 export const list = authenticatedQuery({
@@ -39,15 +40,6 @@ export const create = authenticatedMutation({
     directMessage: v.id('directMessages'),
   },
   handler: async (ctx, { content, directMessage }) => {
-    const member = await ctx.db
-      .query('directMessageMembers')
-      .withIndex('by_direct_message_user', (q) =>
-        q.eq('directMessage', directMessage).eq('user', ctx.user._id)
-      )
-      .first();
-    if (!member) {
-      throw new Error('You are not a member of this direct message');
-    }
     await ctx.db.insert('messages', {
       content,
       directMessage,

@@ -32,5 +32,5 @@ export default defineSchema({
     sender: v.id('users'),
     content: v.string(),
     directMessage: v.id('directMessages'),
-  }).index('by_direct_message', ['directMessage']),
+  }),
 });
