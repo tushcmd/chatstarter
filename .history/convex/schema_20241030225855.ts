@@ -22,11 +22,10 @@ export default defineSchema({
     .index('by_user2_status', ['user2', 'status']),
   directMessages: defineTable({}),
   directMessageMembers: defineTable({
-    directMessage: v.id('directMessages'),
+    directMessage: v.id('directMessage'),
     user: v.id('users'),
   })
     .index('by_direct_message', ['directMessage'])
-    .index('by_direct_message_user', ['directMessage', 'user'])
     .index('by_user', ['user']),
   messages: defineTable({
     sender: v.string(),
