@@ -54,7 +54,7 @@ export function DashboardSidebar() {
                             <SidebarMenu>
                                 {directMessages.map((directMessage) => (
                                     <SidebarMenuItem key={directMessage._id}>
-                                        <SidebarMenuButton asChild isActive={pathname === `/dms/${directMessage._id}`}>
+                                        <SidebarMenuButton asChild>
                                             <Link href={`/dms/${directMessage._id}`}>
                                                 <Avatar>
                                                     <AvatarImage src="directMessage.image" />

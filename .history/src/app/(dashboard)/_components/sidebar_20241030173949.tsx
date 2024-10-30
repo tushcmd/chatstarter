@@ -9,7 +9,6 @@ import { api } from "../../../../convex/_generated/api"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { NewDirectMessage } from "./new-direct-message"
-import { usePathname } from "next/navigation"
 
 
 const useTestDirectMessages = () => {
@@ -24,7 +23,6 @@ const useTestDirectMessages = () => {
 export function DashboardSidebar() {
     const user = useQuery(api.functions.user.get);
     const directMessages = useTestDirectMessages();
-    const pathname = usePathname();
 
     if (!user) {
         return null;
@@ -36,8 +34,8 @@ export function DashboardSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={pathname === "/"}>
-                                    <Link href="/">
+                                <SidebarMenuButton asChild>
+                                    <Link href="/friends">
                                         <User2Icon />
                                         Friends
                                     </Link>
@@ -54,8 +52,8 @@ export function DashboardSidebar() {
                             <SidebarMenu>
                                 {directMessages.map((directMessage) => (
                                     <SidebarMenuItem key={directMessage._id}>
-                                        <SidebarMenuButton asChild isActive={pathname === `/dms/${directMessage._id}`}>
-                                            <Link href={`/dms/${directMessage._id}`}>
+                                        <SidebarMenuButton asChild>
+                                            <Link href={ }>
                                                 <Avatar>
                                                     <AvatarImage src="directMessage.image" />
                                                     <AvatarFallback>{directMessage.username[0]}</AvatarFallback>
