@@ -1,9 +1,9 @@
 'use client'
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { SignOutButton } from "@clerk/nextjs"
 import { useQuery } from "convex/react"
-import { User2Icon } from "lucide-react"
+import { PlusIcon, User2Icon } from "lucide-react"
 import Link from "next/link"
 import { api } from "../../../../convex/_generated/api"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
