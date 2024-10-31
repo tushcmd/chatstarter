@@ -7,7 +7,6 @@ import { useMutation } from "convex/react";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { api } from "../../../../convex/_generated/api";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 
@@ -18,16 +17,15 @@ export function NewDirectMessage() {
         api.functions.dm.create
     );
 
-    const router = useRouter();
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const id = await createDirectMessage({ username: e.currentTarget.username.value });
+            await createDirectMessage({ username: e.currentTarget.username.value });
             setOpen(false)
-            router.push(`/dms/${id}`)
         } catch (error) {
-            toast.error("Failed to create direct message.", {
+            toast.error("Failed to send friend request.", {
                 description:
                     error instanceof Error ? error.message : "An unknown error occurred.",
             });
@@ -37,7 +35,7 @@ export function NewDirectMessage() {
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog>
             <DialogTrigger asChild>
                 <SidebarGroupAction>
                     <PlusIcon />
@@ -52,7 +50,7 @@ export function NewDirectMessage() {
                         Enter a username to send a friend request
                     </DialogDescription>
                 </DialogHeader>
-                <form className="contents" onSubmit={handleSubmit}>
+                <form className="contents" >
                     <div className="flex flex-col gap-1">
                         {/*htmlFor="username"*/}
                         <Label>Username</Label>

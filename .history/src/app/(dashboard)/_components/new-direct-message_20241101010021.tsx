@@ -52,7 +52,7 @@ export function NewDirectMessage() {
                         Enter a username to send a friend request
                     </DialogDescription>
                 </DialogHeader>
-                <form className="contents" onSubmit={handleSubmit}>
+                <form className="contents" >
                     <div className="flex flex-col gap-1">
                         {/*htmlFor="username"*/}
                         <Label>Username</Label>
