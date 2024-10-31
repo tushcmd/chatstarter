@@ -50,9 +50,9 @@ export function DashboardSidebar() {
                                             <Link href={`/dms/${directMessage._id}`}>
                                                 <Avatar>
                                                     <AvatarImage src={directMessage.user.image} />
-                                                    <AvatarFallback>{directMessage.user.username[0]}</AvatarFallback>
+                                                    <AvatarFallback>{directMessage.username[0]}</AvatarFallback>
                                                 </Avatar>
-                                                <p className="font-medium">{directMessage.user.username}</p>
+                                                <p className="font-medium">{directMessage.username}</p>
                                             </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
