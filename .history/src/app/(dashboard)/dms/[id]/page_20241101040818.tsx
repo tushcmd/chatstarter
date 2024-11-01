@@ -33,10 +33,8 @@ export default function MessagePage({ params }: {
                 </Avatar>
                 <h1 className="font-semibold">{user.username}</h1>
             </header>
-            <ScrollArea className="h-full py-4">
-                <MessageItem />
-            </ScrollArea>
-
+            <ScrollArea className="h-full"></ScrollArea>
+            <MessageItem />
         </div>
     )
 }
@@ -69,7 +67,7 @@ function MessageActions() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <MoreVerticalIcon className="size-4 text-muted-foreground" />
+                <MoreVerticalIcon />
                 <span className="sr-only">Message Actions</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

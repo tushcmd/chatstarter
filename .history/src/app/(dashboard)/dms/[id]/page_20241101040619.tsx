@@ -33,10 +33,8 @@ export default function MessagePage({ params }: {
                 </Avatar>
                 <h1 className="font-semibold">{user.username}</h1>
             </header>
-            <ScrollArea className="h-full py-4">
-                <MessageItem />
-            </ScrollArea>
-
+            <ScrollArea className="h-full"></ScrollArea>
+            <MessageItem />
         </div>
     )
 }
@@ -49,14 +47,14 @@ function MessageItem() {
     }
     return (
         <div className="flex items-center px-4 gap-2">
-            <Avatar className="size-8 border">
+            <Avatar className="size-9 border">
                 <AvatarImage src={user?.image} />
                 <AvatarFallback>
                     <User2Icon />
                 </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col mr-auto">
-                <p className="text-xs text-muted-foreground">{user?.username}</p>
+            <div className="flex flex-col">
+                <p className="text-xs font-muted-foreground">{user?.username}</p>
                 <p className="text-sm">Hello, world</p>
             </div>
             <MessageActions />
@@ -69,7 +67,7 @@ function MessageActions() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <MoreVerticalIcon className="size-4 text-muted-foreground" />
+                <MoreVerticalIcon />
                 <span className="sr-only">Message Actions</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
