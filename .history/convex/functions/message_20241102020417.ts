@@ -80,10 +80,6 @@ export const remove = authenticatedMutation({
       throw new Error("You are not the sender of this message");
     }
     await ctx.db.delete(id);
-
-    if (message.attachment) {
-      await ctx.storage.delete(message.attachment);
-    }
   },
 });
 

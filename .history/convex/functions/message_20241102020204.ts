@@ -25,12 +25,9 @@ export const list = authenticatedQuery({
     return await Promise.all(
       messages.map(async (message) => {
         const sender = await ctx.db.get(message.sender);
-        const attachment = message.attachment
-          ? await ctx.storage.getUrl(message.attachment)
-          : undefined;
+        const attachment = await ctx.storage.getUrl(message.attachment);
         return {
           ...message,
-          attachment,
           sender,
         };
       }),
@@ -80,10 +77,6 @@ export const remove = authenticatedMutation({
       throw new Error("You are not the sender of this message");
     }
     await ctx.db.delete(id);
-
-    if (message.attachment) {
-      await ctx.storage.delete(message.attachment);
-    }
   },
 });
 
