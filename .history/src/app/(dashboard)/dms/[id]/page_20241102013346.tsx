@@ -48,7 +48,6 @@ export default function MessagePage({
                     <MessageItem key={message._id} message={message} />
                 ))}
             </ScrollArea>
-            <TypingIndicator directMessage={id} />
             <MessageInput directMessage={id} />
         </div>
     )
@@ -60,16 +59,6 @@ function TypingIndicator({
     directMessage: Id<"directMessages">
 }) {
     const usernames = useQuery(api.functions.message.list, { directMessage })
-
-    if (!usernames || usernames.length === 0) {
-        return null
-    }
-
-    return (
-        <div className="text-sm text-muted-foreground px-4 py-2" >
-            {usernames?.join(",")} is typing...
-        </div>
-    )
 }
 
 type Message = FunctionReturnType<typeof api.functions.message.list>[number];
@@ -159,7 +148,7 @@ function MessageInput({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 onKeyDown={e => {
-                    if (content.length > 0) {
+                    if (e.currentTarget.value.length > 0) {
                         sendTypingIndicator({ directMessage })
                     }
                 }}

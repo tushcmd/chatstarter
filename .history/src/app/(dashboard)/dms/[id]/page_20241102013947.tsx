@@ -48,7 +48,6 @@ export default function MessagePage({
                     <MessageItem key={message._id} message={message} />
                 ))}
             </ScrollArea>
-            <TypingIndicator directMessage={id} />
             <MessageInput directMessage={id} />
         </div>
     )
@@ -159,7 +158,7 @@ function MessageInput({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 onKeyDown={e => {
-                    if (content.length > 0) {
+                    if (e.currentTarget.value.length > 0) {
                         sendTypingIndicator({ directMessage })
                     }
                 }}

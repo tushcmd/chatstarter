@@ -159,7 +159,7 @@ function MessageInput({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 onKeyDown={e => {
-                    if (content.length > 0) {
+                    if (e.currentTarget.value.length > 0) {
                         sendTypingIndicator({ directMessage })
                     }
                 }}

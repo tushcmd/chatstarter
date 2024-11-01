@@ -70,7 +70,7 @@ export const remove = internalMutation({
         q.eq("user", user).eq("directMessage", directMessage),
       )
       .unique();
-    if (existing && (!expiresAt || existing.expiresAt === expiresAt)) {
+    if (existing && existing.expiresAt === expiresAt) {
       ctx.db.delete(existing._id);
     }
   },
