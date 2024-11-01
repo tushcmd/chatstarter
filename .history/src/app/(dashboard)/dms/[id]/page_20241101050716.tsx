@@ -62,7 +62,7 @@ function MessageItem({ message }: { message: Message }) {
         return null;
     }
     return (
-        <div className="flex items-center px-4 gap-2 py-2">
+        <div className="flex items-center px-4 gap-2">
             <Avatar className="size-8 border">
                 {message.sender && <AvatarImage src={message.sender?.image} />}
                 <AvatarFallback>
@@ -115,7 +115,7 @@ function MessageInput({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await sendMessage({ content, directMessage });
+            await createMessage({ content, directMessage });
             setContent("");
         } catch (error) {
             toast.error("Failed to send message.", {
@@ -123,14 +123,13 @@ function MessageInput({
                     error instanceof Error ? error.message : "An unknown error occurred.",
             });
         }
-    };
-    return (
-        <form className="flex items-center p-4 gap-2" onSubmit={handleSubmit}>
-            <Input placeholder="Message" value={content} onChange={(e) => setContent(e.target.value)} />
-            <Button size="icon">
-                <SendIcon />
-                <span className="sr-only">Send</span>
-            </Button>
-        </form>
-    );
-}
+        return (
+            <div className="flex items-center p-4 gap-2">
+                <Input placeholder="Message" value={content} onChange={(e) => setContent(e.target.value)} />
+                <Button size="icon">
+                    <SendIcon />
+                    <span className="sr-only">Send</span>
+                </Button>
+            </div>
+        )
+    } 

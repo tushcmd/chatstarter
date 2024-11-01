@@ -1,18 +1,17 @@
 'use client'
 
-import { use, useState } from "react";
+import { use } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from "@/components/ui/input";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { MoreVerticalIcon, SendIcon, TrashIcon, User2Icon } from "lucide-react";
 import { api } from "../../../../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { FunctionReturnType } from "convex/server";
-import { toast } from "sonner";
 
 export default function MessagePage({
     params
@@ -62,7 +61,7 @@ function MessageItem({ message }: { message: Message }) {
         return null;
     }
     return (
-        <div className="flex items-center px-4 gap-2 py-2">
+        <div className="flex items-center px-4 gap-2">
             <Avatar className="size-8 border">
                 {message.sender && <AvatarImage src={message.sender?.image} />}
                 <AvatarFallback>
@@ -111,26 +110,14 @@ function MessageInput({
 }) {
     const [content, setContent] = useState("");
 
-    const sendMessage = useMutation(api.functions.message.create);
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            await sendMessage({ content, directMessage });
-            setContent("");
-        } catch (error) {
-            toast.error("Failed to send message.", {
-                description:
-                    error instanceof Error ? error.message : "An unknown error occurred.",
-            });
-        }
-    };
+    const createMessage = useMutation(api.functions.message.create);
     return (
-        <form className="flex items-center p-4 gap-2" onSubmit={handleSubmit}>
+        <div className="flex items-center p-4 gap-2">
             <Input placeholder="Message" value={content} onChange={(e) => setContent(e.target.value)} />
             <Button size="icon">
                 <SendIcon />
                 <span className="sr-only">Send</span>
             </Button>
-        </form>
-    );
-}
+        </div>
+    )
+} 
