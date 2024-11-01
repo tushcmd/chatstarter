@@ -30,9 +30,7 @@ export default function MessagePage({ params }: {
                         <User2Icon />
                     </AvatarFallback>
                 </Avatar>
-                <h1 className="font-semibold">{user.username}</h1>
             </header>
-            <MessageItem />
         </div>
     )
 }

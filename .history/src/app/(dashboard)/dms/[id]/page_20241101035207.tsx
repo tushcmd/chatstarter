@@ -30,31 +30,22 @@ export default function MessagePage({ params }: {
                         <User2Icon />
                     </AvatarFallback>
                 </Avatar>
-                <h1 className="font-semibold">{user.username}</h1>
             </header>
-            <MessageItem />
         </div>
     )
 }
 
 function MessageItem() {
-    const user = useQuery(api.functions.user.get);
-
-    if (!user) {
-        return null;
-    }
     return (
         <div className="flex items-center px-4 gap-2">
+
             <Avatar className="size-9 border">
-                <AvatarImage src={user?.image} />
+                <AvatarImage src={user.image} />
                 <AvatarFallback>
                     <User2Icon />
                 </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
-                <p className="text-xs font-muted-foreground">{user?.username}</p>
-                <p className="text-sm">Hello, world</p>
-            </div>
+
         </div>
     )
 }

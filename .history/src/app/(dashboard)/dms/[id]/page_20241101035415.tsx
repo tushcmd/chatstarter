@@ -30,9 +30,7 @@ export default function MessagePage({ params }: {
                         <User2Icon />
                     </AvatarFallback>
                 </Avatar>
-                <h1 className="font-semibold">{user.username}</h1>
             </header>
-            <MessageItem />
         </div>
     )
 }
@@ -52,8 +50,8 @@ function MessageItem() {
                 </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-                <p className="text-xs font-muted-foreground">{user?.username}</p>
-                <p className="text-sm">Hello, world</p>
+                <p className="text-sm font-medium">{user?.username}</p>
+                <p className="text-sm font-medium">content</p>
             </div>
         </div>
     )
