@@ -92,16 +92,11 @@ function MessageActions({ message }: { message: Message }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <MoreVerticalIcon
-                    className="size-4 text-muted-foreground"
-                />
+                <MoreVerticalIcon className="size-4 text-muted-foreground" />
                 <span className="sr-only">Message Actions</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem
-                    className="text-destructive"
-                    onClick={() => removeMutation({ id: message._id })}
-                >
+                <DropdownMenuItem className="text-destructive" onClick={() => removeMutation({ id: message._id })}>
                     <TrashIcon />
                     Delete
                 </DropdownMenuItem>

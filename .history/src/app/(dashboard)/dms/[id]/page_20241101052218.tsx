@@ -100,8 +100,7 @@ function MessageActions({ message }: { message: Message }) {
             <DropdownMenuContent>
                 <DropdownMenuItem
                     className="text-destructive"
-                    onClick={() => removeMutation({ id: message._id })}
-                >
+                    onClick={() => removeMutation({ id: message._id })}>
                     <TrashIcon />
                     Delete
                 </DropdownMenuItem>

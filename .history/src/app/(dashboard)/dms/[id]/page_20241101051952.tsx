@@ -84,7 +84,16 @@ function MessageActions({ message }: { message: Message }) {
 
     const removeMutation = useMutation(api.functions.message.remove);
 
-
+    const handleRemove = async () => {
+        try {
+            await removeMutation({ id: message._id });
+        } catch (error) {
+            toast.error("Failed to remove message.", {
+                description:
+                    error instanceof Error ? error.message : "An unknown error occurred.",
+            });
+        }
+    }
     if (!user || message.sender?._id === user._id) {
         return null;
     }
@@ -92,16 +101,11 @@ function MessageActions({ message }: { message: Message }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <MoreVerticalIcon
-                    className="size-4 text-muted-foreground"
-                />
+                <MoreVerticalIcon className="size-4 text-muted-foreground" />
                 <span className="sr-only">Message Actions</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem
-                    className="text-destructive"
-                    onClick={() => removeMutation({ id: message._id })}
-                >
+                <DropdownMenuItem className="text-destructive">
                     <TrashIcon />
                     Delete
                 </DropdownMenuItem>
