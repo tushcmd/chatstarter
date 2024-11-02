@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from "@/components/ui/input";
 import { useMutation, useQuery } from "convex/react";
-import { LoaderIcon, MoreVerticalIcon, PlusIcon, SendIcon, TrashIcon, User2Icon } from "lucide-react";
+import { MoreVerticalIcon, PlusIcon, SendIcon, TrashIcon, User2Icon } from "lucide-react";
 import { api } from "../../../../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { FunctionReturnType } from "convex/server";
 import { toast } from "sonner";
-import Image from "next/image";
+import { Image } from "next/image.js"
 
 
 export default function MessagePage({
@@ -61,19 +61,15 @@ function TypingIndicator({
 }: {
     directMessage: Id<"directMessages">
 }) {
-    const typingUsers = useQuery(api.functions.typing.list, { directMessage })
+    const usernames = useQuery(api.functions.message.list, { directMessage })
 
-    if (!typingUsers || typingUsers.length === 0) {
+    if (!usernames || usernames.length === 0) {
         return null
     }
 
-    const typingText = typingUsers.length === 1
-        ? `${typingUsers[0]} is typing...`
-        : `${typingUsers.join(", ")} are typing...`
-
     return (
-        <div className="text-sm text-muted-foreground px-4 py-2">
-            {typingText}
+        <div className="text-sm text-muted-foreground px-4 py-2" >
+            {usernames?.join(",")} is typing...
         </div>
     )
 }
@@ -157,40 +153,18 @@ function MessageInput({
     const sendTypingIndicator = useMutation(api.functions.typing.upsert)
     const generateUploadUrl = useMutation(api.functions.message.generateUploadUrl)
     const [attachment, setAttachment] = useState<Id<"_storage">>()
-    const [file, setFile] = useState<File>()
-    const [isUploading, setIsUploading] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-
-        setFile(file)
-        setIsUploading(true)
-
-        try {
-            const url = await generateUploadUrl()
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': file.type,
-                },
-                body: file,  // Send the actual file instead of the string 'file'
-            })
-
-            if (!res.ok) {
-                throw new Error('Failed to upload file')
-            }
-
-            const { storageId } = await res.json() as { storageId: Id<"_storage"> }
-            setAttachment(storageId)
-        } catch (error) {
-            toast.error("Failed to upload image.", {
-                description: error instanceof Error ? error.message : "An unknown error occurred.",
-            });
-        } finally {
-            setIsUploading(false)
-        }
+        const url = await generateUploadUrl()
+        const res = await fetch(url, {
+            method: 'POST',
+            body: 'file',
+        })
+        const { storageId } = await res.json() as { storageId: Id<"_storage"> }
+        setAttachment(storageId)
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -198,7 +172,6 @@ function MessageInput({
             await sendMessage({ content, attachment, directMessage });
             setContent("");
             setAttachment(undefined)
-            setFile(undefined)
         } catch (error) {
             toast.error("Failed to send message.", {
                 description:
@@ -208,9 +181,8 @@ function MessageInput({
     };
     return (
         <>
-            <form className="flex items-end p-4 gap-2" onSubmit={handleSubmit}>
+            <form className="flex items-center p-4 gap-2" onSubmit={handleSubmit}>
                 <Button
-                    type="button"
                     size="icon"
                     onClick={() => {
                         fileInputRef.current?.click()
@@ -219,25 +191,16 @@ function MessageInput({
                     <PlusIcon />
                     <span className="sr-only">Attach</span>
                 </Button>
-                <div className="flex flex-col flex-1 gap-2">
-                    {file && (
-                        <ImagePreview
-                            file={file}
-                            isUploading={isUploading}
-                        />
-                    )}
-                    <Input
-                        placeholder="Message"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        onKeyDown={() => {
-                            if (content.length > 0) {
-                                sendTypingIndicator({ directMessage })
-                            }
-                        }}
-                    />
-                </div>
-
+                <Input
+                    placeholder="Message"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    onKeyDown={() => {
+                        if (content.length > 0) {
+                            sendTypingIndicator({ directMessage })
+                        }
+                    }}
+                />
                 <Button size="icon">
                     <SendIcon />
                     <span className="sr-only">Send</span>
@@ -246,23 +209,4 @@ function MessageInput({
             <input type="file" className="hidden" ref={fileInputRef} onChange={handleImageUpload} />
         </>
     );
-}
-
-
-function ImagePreview({ file, isUploading }: { file: File, isUploading: boolean }) {
-    return (
-        <div className="relative size-40 overflow-hidden rounded border">
-            <Image
-                src={URL.createObjectURL(file)}
-                width={300}
-                height={300}
-                alt="Attachment"
-            />
-            {isUploading && (
-                <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
-                    <LoaderIcon className="animate-spin size-8" />
-                </div>
-            )}
-        </div>
-    )
 }

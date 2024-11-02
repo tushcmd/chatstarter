@@ -61,19 +61,15 @@ function TypingIndicator({
 }: {
     directMessage: Id<"directMessages">
 }) {
-    const typingUsers = useQuery(api.functions.typing.list, { directMessage })
+    const usernames = useQuery(api.functions.message.list, { directMessage })
 
-    if (!typingUsers || typingUsers.length === 0) {
+    if (!usernames || usernames.length === 0) {
         return null
     }
 
-    const typingText = typingUsers.length === 1
-        ? `${typingUsers[0]} is typing...`
-        : `${typingUsers.join(", ")} are typing...`
-
     return (
-        <div className="text-sm text-muted-foreground px-4 py-2">
-            {typingText}
+        <div className="text-sm text-muted-foreground px-4 py-2" >
+            {usernames?.join(",")} is typing...
         </div>
     )
 }
@@ -164,33 +160,16 @@ function MessageInput({
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-
         setFile(file)
         setIsUploading(true)
-
-        try {
-            const url = await generateUploadUrl()
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': file.type,
-                },
-                body: file,  // Send the actual file instead of the string 'file'
-            })
-
-            if (!res.ok) {
-                throw new Error('Failed to upload file')
-            }
-
-            const { storageId } = await res.json() as { storageId: Id<"_storage"> }
-            setAttachment(storageId)
-        } catch (error) {
-            toast.error("Failed to upload image.", {
-                description: error instanceof Error ? error.message : "An unknown error occurred.",
-            });
-        } finally {
-            setIsUploading(false)
-        }
+        const url = await generateUploadUrl()
+        const res = await fetch(url, {
+            method: 'POST',
+            body: 'file',
+        })
+        const { storageId } = await res.json() as { storageId: Id<"_storage"> }
+        setAttachment(storageId)
+        setIsUploading(false)
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -251,12 +230,13 @@ function MessageInput({
 
 function ImagePreview({ file, isUploading }: { file: File, isUploading: boolean }) {
     return (
-        <div className="relative size-40 overflow-hidden rounded border">
+        <div className="relative size-40 overflow-hidden">
             <Image
                 src={URL.createObjectURL(file)}
                 width={300}
                 height={300}
                 alt="Attachment"
+                className="rounded border overflow-hidden"
             />
             {isUploading && (
                 <div className="absolute inset-0 bg-background/50 flex items-center justify-center">

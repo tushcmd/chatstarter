@@ -61,19 +61,15 @@ function TypingIndicator({
 }: {
     directMessage: Id<"directMessages">
 }) {
-    const typingUsers = useQuery(api.functions.typing.list, { directMessage })
+    const usernames = useQuery(api.functions.message.list, { directMessage })
 
-    if (!typingUsers || typingUsers.length === 0) {
+    if (!usernames || usernames.length === 0) {
         return null
     }
 
-    const typingText = typingUsers.length === 1
-        ? `${typingUsers[0]} is typing...`
-        : `${typingUsers.join(", ")} are typing...`
-
     return (
-        <div className="text-sm text-muted-foreground px-4 py-2">
-            {typingText}
+        <div className="text-sm text-muted-foreground px-4 py-2" >
+            {usernames?.join(",")} is typing...
         </div>
     )
 }
